@@ -237,17 +237,16 @@ onClick={() => window.location.href="/cart"}
 
 {/* HERO */}
 
-<main className="flex flex-col items-center mt-20 text-center">
+<main className="flex flex-col items-center mt-10 md:mt-20 text-center px-2">
 
-<h2 className="text-6xl font-black uppercase leading-tight tracking-tight text-white drop-shadow-[0_0_30px_rgba(59,130,246,0.9)]">
-
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight tracking-tight text-white drop-shadow-[0_0_30px_rgba(59,130,246,0.9)] px-4">
 YOUR NEXT <br/>
 
 <span className="text-blue-400">ADVENTURE</span> AWAITS
 
 </h2>
 
-<p className="text-gray-400 mt-6 max-w-md">
+<p className="text-sm sm:text-base md:text-lg text-gray-400 mt-6 max-w-md px-4">
 
 TOKIO Store is your ultimate destination for premium games. We provide instant delivery, unbeatable prices, and 100% trusted service.
 
