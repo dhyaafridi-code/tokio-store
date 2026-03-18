@@ -133,104 +133,79 @@ return (
 
 {/* NAVBAR */}
 
-<nav className="flex justify-between items-center px-10 py-6 w-full">
+<nav className="flex justify-between items-center px-6 py-4 w-full relative">
 
-<div className="text-2xl font-bold text-white tracking-widest">
-TOKIO <span className="text-blue-500">Store</span>
+{/* LOGO */}
+<div className="text-xl md:text-2xl font-bold tracking-widest">
+  TOKIO <span className="text-blue-500">Store</span>
 </div>
 
-{/* RIGHT SIDE */}
-<div className="flex items-center gap-6">
+{/* DESKTOP MENU */}
+<div className="hidden md:flex items-center gap-6">
 
-<div className="relative group">
+  <div className="relative group">
+    <button className="text-gray-300 hover:text-blue-400">
+      Contact ▾
+    </button>
 
-<button
-onClick={(e)=>{
-  e.stopPropagation()
-  setContactOpen(!contactOpen)
-  setMenuOpen(false)
-}}
-className="text-gray-300 hover:text-blue-400 transition font-medium"
->
-Contact ▾
-</button>
-<div className="absolute top-full right-0 w-40 bg-[#020617] border border-blue-500/30 rounded-lg shadow-xl 
-opacity-0 invisible 
-group-hover:opacity-100 group-hover:visible 
-transition-all duration-300 z-[999] mt-2">
-
-  <ul className="py-2 text-sm">
-    <li><a href="https://t.me/DHIAA_FRD" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Telegram</a></li>
-    <li><a href="https://www.instagram.com/el_fr1do/" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Instagram</a></li>
-    <li><a href="https://discord.gg/Ehz6sVjh" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Discord</a></li>
-  </ul>
-
-</div>
-
-
-</div>
-
-
-
-  {/* LOGIN / SIGNUP */}
-{user ? (
-
-<div className="relative">  {/* هذا هو الحل */}
-
-<button
-onClick={(e)=>{
-  e.stopPropagation()
-  setMenuOpen(!menuOpen)
-}}
-className="flex items-center gap-2 bg-blue-600 px-3 py-1 rounded-full"
->
-  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center font-bold text-white">
-   {avatar ? (
-  <img src={avatar} className="w-8 h-8 rounded-full object-cover" />
-) : (
-  <span>{user.charAt(0).toUpperCase()}</span>
-)}
+    <div className="absolute top-full right-0 w-40 bg-[#020617] border border-blue-500/30 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2">
+      <ul className="py-2 text-sm">
+        <li><a href="https://t.me/DHIAA_FRD" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Telegram</a></li>
+        <li><a href="https://www.instagram.com/el_fr1do/" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Instagram</a></li>
+        <li><a href="https://discord.gg/Ehz6sVjh" target="_blank" className="block px-4 py-2 hover:bg-blue-900/30">Discord</a></li>
+      </ul>
+    </div>
   </div>
 
-  <span className="text-sm">▼</span>
-</button>
-
-{menuOpen && (
-  <div className="absolute right-0 mt-3 w-40 bg-[#0b121c] border border-blue-500/30 rounded-lg shadow-xl z-50">
-
-    <ul className="text-sm">
-      <li
-onClick={() => {
-  setMenuOpen(false);
-  window.location.href = "/profile";
-}}
-  className="px-4 py-2 hover:bg-blue-900/30 cursor-pointer"
->
-  Profile
-</li>
-      <li 
-onClick={() => window.location.href="/cart"}
-  className="px-4 py-2 hover:bg-blue-900/30 cursor-pointer"
-> My Cart</li>
-  
-      <li className="px-4 py-2 hover:bg-blue-900/30 cursor-pointer">Settings</li>
-      <li onClick={handleLogout} className="px-4 py-2 hover:bg-red-600/30 text-red-400 cursor-pointer">Logout</li>
-    </ul>
-
-  </div>
-)}
-
-</div>
-
-) : (
+  {!user ? (
     <div className="bg-blue-600 px-4 py-2 rounded-full flex gap-2">
       <a href="/login">Login</a>
       <span>/</span>
       <a href="/register">Signup</a>
     </div>
+  ) : (
+    <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded-full">
+      Logout
+    </button>
   )}
 
 </div>
+
+{/* MOBILE BUTTON ☰ */}
+<button
+onClick={() => setMenuOpen(!menuOpen)}
+className="md:hidden text-2xl"
+>
+☰
+</button>
+
+{/* MOBILE MENU */}
+{menuOpen && (
+  <div className="absolute top-full left-0 w-full bg-[#020617] border-t border-blue-500/30 md:hidden z-50">
+
+    <div className="flex flex-col items-center py-6 gap-4">
+
+      <a href="https://t.me/DHIAA_FRD" className="text-gray-300 hover:text-blue-400">Telegram</a>
+      <a href="https://www.instagram.com/el_fr1do/" className="text-gray-300 hover:text-blue-400">Instagram</a>
+      <a href="https://discord.gg/Ehz6sVjh" className="text-gray-300 hover:text-blue-400">Discord</a>
+
+      {!user ? (
+        <div className="bg-blue-600 px-4 py-2 rounded-full flex gap-2">
+          <a href="/login">Login</a>
+          <span>/</span>
+          <a href="/register">Signup</a>
+        </div>
+      ) : (
+        <>
+          <a href="/profile" className="text-white">Profile</a>
+          <a href="/cart" className="text-white">Cart</a>
+          <button onClick={handleLogout} className="text-red-400">Logout</button>
+        </>
+      )}
+
+    </div>
+  </div>
+)}
 
 </nav>
 
