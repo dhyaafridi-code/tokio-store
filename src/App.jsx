@@ -164,9 +164,53 @@ return (
       <a href="/register">Signup</a>
     </div>
   ) : (
-    <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded-full">
-      Logout
-    </button>
+    <div className="relative group">
+
+  {/* AVATAR */}
+  <button className="flex items-center gap-2">
+    <img
+      src={avatar || "https://i.pravatar.cc/40"}
+      className="w-10 h-10 rounded-full border-2 border-blue-500"
+    />
+    <span className="text-sm text-gray-300">▼</span>
+  </button>
+
+  {/* DROPDOWN */}
+  <div className="
+    absolute right-0 mt-3 w-40
+    bg-[#020617] border border-blue-500/30
+    rounded-lg
+    opacity-0 invisible
+    group-hover:opacity-100 group-hover:visible
+    transition-all duration-300
+  ">
+    <ul className="py-2 text-sm">
+
+      <li>
+        <a href="/profile" className="block px-4 py-2 hover:bg-blue-900/30">
+          Profile
+        </a>
+      </li>
+
+      <li>
+        <a href="/cart" className="block px-4 py-2 hover:bg-blue-900/30">
+          Cart
+        </a>
+      </li>
+
+      <li>
+        <button
+          onClick={handleLogout}
+          className="w-full text-left px-4 py-2 hover:bg-red-900/30 text-red-400"
+        >
+          Logout
+        </button>
+      </li>
+
+    </ul>
+  </div>
+
+</div>
   )}
 
 </div>
