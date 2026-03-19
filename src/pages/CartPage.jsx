@@ -34,14 +34,11 @@ export default function CartPage() {
   };
 
   // حساب المجموع الإجمالي
-  const total = cart
+const total = cart
   .reduce((sum, game) => {
-    const price = parseFloat(game.price.replace("$", ""))
-
-    return sum + (isNaN(price) ? 0 : price)
+    return sum + Number(game.price)
   }, 0)
   .toFixed(2)
-
   return (
     
     <div className="min-h-screen bg-[#020617] text-white p-10">
@@ -77,7 +74,9 @@ export default function CartPage() {
         <h4 className="font-semibold text-sm">{game.title}</h4>
 
         {/* السعر */}
-        <p className="text-blue-400 text-sm">${game.price}</p>
+        <p className="text-blue-400 text-sm">
+  {game.price === 0 ? "Free" : `$${game.price}`}
+</p>
 
         {/* زر */}
         <button
