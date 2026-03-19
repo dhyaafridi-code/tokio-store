@@ -343,10 +343,10 @@ CUSTOMER <span className="text-blue-400">REVIEWS</span>
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
 
 {[
-{name:"Alex M.",text:"Got GTA 5 for an insane price. Delivery was instant."},
-{name:"Sarah K.",text:"The automated pricing always beats other sites."},
-{name:"Jorden P.",text:"Smooth checkout, great customer support on Discord."},
-{name:"Chris L.",text:"Reliable and fast. I've purchased 3 games."}
+{name:"Mr_Rabie.",text:"Got GTA 5 for an insane price. Delivery was instant."},
+{name:"Fares_Elrekerma.",text:"The automated pricing always beats other sites."},
+{name:"Abdelmalek_Kefta.",text:"Smooth checkout, great customer support on Discord."},
+{name:"Achref B9t.",text:"Reliable and fast. I've purchased 3 games."}
 ].map((review,index)=>(
 
 <div key={index} className="bg-[#0b121c] p-4 rounded-xl border border-gray-800 hover:border-blue-500 hover:-translate-y-2 transition">
