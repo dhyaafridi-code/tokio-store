@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage"
 import Dashboard from "./pages/Dashboard"
 import { useState, useEffect } from "react";
 import ProfilePage from "./pages/ProfilePage";
+import CheckoutPage from "./pages/CheckoutPage";
 import { signOut } from "firebase/auth";
 import Signature from "./pages/Signature";
 import CartPage from "./pages/CartPage";
@@ -12,6 +13,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import './index.css';
 export default function App() {
+  const [cartCount, setCartCount] = useState(0)
 const [user,setUser] = useState(null)
 const [cartMessage, setCartMessage] = useState("")
 const [contactOpen, setContactOpen] = useState(false)
@@ -43,6 +45,7 @@ const addToCart = (game) => {
   const newCart = [...storedCart, game]
 
   localStorage.setItem("cart", JSON.stringify(newCart))
+  window.dispatchEvent(new Event("cartUpdated"))
 
   setCartMessage(`✅ ${game.title} added to cart`)
 
@@ -56,11 +59,13 @@ const handleLogout = async () => {
 
 useEffect(() => {
 
-  // تحميل avatar من localStorage
-  const savedAvatar = localStorage.getItem("avatar");
-  if (savedAvatar) setAvatar(savedAvatar);
+  const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || []
+    setCartCount(cart.length)
+  }
 
-  // تحميل user
+  updateCartCount()
+
   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
       setUser(currentUser.email);
@@ -71,17 +76,21 @@ useEffect(() => {
     }
   });
 
-  // 🔥 listener تاع avatar
   const updateAvatar = () => {
     const newAvatar = localStorage.getItem("avatar");
     setAvatar(newAvatar);
   };
 
   window.addEventListener("avatarChanged", updateAvatar);
+  window.addEventListener("cartUpdated", updateCartCount);
+
+  const savedAvatar = localStorage.getItem("avatar");
+  if (savedAvatar) setAvatar(savedAvatar);
 
   return () => {
     unsubscribe();
     window.removeEventListener("avatarChanged", updateAvatar);
+    window.removeEventListener("cartUpdated", updateCartCount);
   };
 
 }, []);
@@ -94,6 +103,7 @@ return (
 <Route path="/profile" element={<ProfilePage />} />
 <Route path="/login" element={<LoginPage />} />
 <Route path="/register" element={<RegisterPage />} />
+<Route path="/checkout" element={<CheckoutPage />} />
 <Route path="/dashboard" element={<Dashboard />} />
 <Route path="/" element={
 
@@ -193,9 +203,17 @@ return (
       </li>
 
       <li>
-        <a href="/cart" className="block px-4 py-2 hover:bg-blue-900/30">
-          My Cart
-        </a>
+     <div className="relative">
+  <a href="/cart" className="block px-4 py-2 hover:bg-blue-900/30">
+    Cart 🛒
+  </a>
+
+  {cartCount > 0 && (
+    <span className="absolute top-1 right-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
+      {cartCount}
+    </span>
+  )}
+</div>
       </li>
 
       <li>

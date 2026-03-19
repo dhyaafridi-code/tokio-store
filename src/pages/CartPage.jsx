@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Signature from "./Signature";
+import { Link } from "react-router-dom";
 export default function CartPage() {
   const [cartMessage, setCartMessage] = useState(""); // state لعرض الرسالة عند الإضافة إلى السلة
   const [cart, setCart] = useState([]); // السلة نفسها
@@ -26,13 +27,14 @@ export default function CartPage() {
   };
 
   // دالة لإزالة اللعبة من السلة
-  const removeGame = (index) => {
-    const newCart = [...cart];
-    newCart.splice(index, 1);
-    setCart(newCart);
-    localStorage.setItem("cart", JSON.stringify(newCart));
-  };
+const removeGame = (index) => {
+  const newCart = [...cart];
+  newCart.splice(index, 1);
+  setCart(newCart);
+  localStorage.setItem("cart", JSON.stringify(newCart));
 
+  window.dispatchEvent(new Event("cartUpdated")) // ✅ مهم
+};
   // حساب المجموع الإجمالي
 const total = cart
   .reduce((sum, game) => {
@@ -99,11 +101,11 @@ const total = cart
     Total: <span className="text-blue-400 font-bold">${total}</span>
   </h2>
 
-  <a href="https://discord.gg/Ehz6sVjh" target="_blank">
-    <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-sm shadow-md transition">
-      Confirm Purchase
-    </button>
-  </a>
+<Link to="/checkout">
+  <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-sm shadow-md transition">
+    Confirm Purchase
+  </button>
+</Link>
 
 </div>
 <Signature />
