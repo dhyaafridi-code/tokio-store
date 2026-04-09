@@ -243,7 +243,7 @@ const HomePage = ({
                     </div>
                     <div>
                       <h3 className="font-bold text-lg text-white mb-1">Explore More</h3>
-                      <p className="text-xs text-gray-400 font-medium">+20 Other Games</p>
+                      <p className="text-xs text-gray-400 font-medium">+500,000 Other Games</p>
                     </div>
                     <span className="mt-2 text-xs font-semibold text-blue-400 flex items-center gap-1 group-hover:gap-2 transition-all">
                       View All <ArrowRight className="w-3 h-3" />
