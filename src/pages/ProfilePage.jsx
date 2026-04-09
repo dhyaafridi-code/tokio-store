@@ -5,8 +5,10 @@ import {
   onAuthStateChanged,
   updatePassword,
   EmailAuthProvider,
-  reauthenticateWithCredential
+  reauthenticateWithCredential,
+  signOut // ✅ زدت هاد السطر
 } from "firebase/auth";
+
 import { doc, getDoc, updateDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -133,7 +135,16 @@ export default function ProfilePage() {
       setMessage("✅ Password changed.");
     } catch (err) { setMessage("❌ Failed: " + err.message); }
   };
-
+  // دالة تسجيل الخروج الصحيحة
+  const handleUserLogout = async () => {
+    try {
+      await signOut(auth); // كيهجيك من الـ Firebase
+      localStorage.removeItem("username"); // كيزدو الذاكرة
+      navigate("/"); // كييرحوك للهوم بيج
+    } catch (error) {
+      console.log("Error signing out: " + error.message);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#020617] text-white font-sans relative overflow-hidden pb-20">
       {/* Animated Background */}
@@ -208,11 +219,11 @@ export default function ProfilePage() {
                 <div className="p-2 bg-yellow-500/10 text-yellow-500 rounded-lg"><Star className="w-4 h-4"/></div>
                 <span className="group-hover:text-white">Saved Games</span>
               </a>
-              <button onClick={() => { localStorage.removeItem("username"); navigate("/") }}
-                className="w-full flex items-center gap-3 p-3 hover:bg-red-500/10 rounded-xl transition-colors text-sm text-red-400 group">
-                <div className="p-2 bg-red-500/10 rounded-lg group-hover:bg-red-500 group-hover:text-white transition-colors"><LogOut className="w-4 h-4"/></div>
-                <span>Logout</span>
-              </button>
+             <button onClick={handleUserLogout}
+    className="w-full flex items-center gap-3 p-3 hover:bg-red-500/10 rounded-xl transition-colors text-sm text-red-400 group">
+    <div className="p-2 bg-red-500/10 rounded-lg group-hover:bg-red-500 group-hover:text-white transition-colors"><LogOut className="w-4 h-4"/></div>
+    <span>Logout</span>
+</button>
             </div>
           </div>
         </motion.div>

@@ -1,9 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/RegisterPage"
-import Dashboard from "./pages/Dashboard"
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import GameDetailsPage from "./pages/GameDetailsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import Dashboard from "./pages/Dashboard";
 import ProfilePage from "./pages/ProfilePage";
 import CheckoutPage from "./pages/CheckoutPage";
+import AllGamesPage from "./pages/AllGamesPage"; 
+import { GAMES, CATEGORIES } from "./games"; 
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { signOut } from "firebase/auth";
@@ -11,7 +14,6 @@ import Signature from "./pages/Signature";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import './index.css';
-
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster, toast } from 'sonner';
 import {
@@ -19,33 +21,12 @@ import {
   LogIn, LogOut, Mail, Lock, User, ShieldCheck, Search,
   Eye, EyeOff, Trash2, Plus, Minus, ArrowRight,
   CheckCircle2, Shield, Heart, ChevronUp, Zap, ChevronRight, ArrowUpRight, Settings,
-  CreditCard, Sparkles, Send as TelegramIcon, MessageCircle as DiscordIcon
+  CreditCard, Sparkles,  Send as TelegramIcon, MessageCircle as DiscordIcon
 } from 'lucide-react';
 
 const InstagramIcon = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
 );
-
-const GAMES = [
-  { title: "FC 26", price: 10.99, image: "https://image.api.playstation.com/vulcan/ap/rnd/202507/1617/2e757ffb0a6bb4b91af84db64e0183d725e56e5354f45eba.png", category: ['hot', 'sport'], badge: '🔥 HOT', badgeColor: 'from-orange-500 to-red-500', rating: 4.8, originalPrice: 29.99 },
-  { title: "GTA 5", price: 10.50, image: "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png", category: ['hot', 'action', 'shooter'], badge: '🔥 HOT', badgeColor: 'from-orange-500 to-red-500', rating: 4.9, originalPrice: 39.99 },
-  { title: "Red Dead Redemption 2", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Red_Dead_Redemption_II.jpg/250px-Red_Dead_Redemption_II.jpg", category: ['hot', 'adventure', 'action'], badge: '🔥 HOT', badgeColor: 'from-orange-500 to-red-500', rating: 4.9, originalPrice: 49.99 },
-  { title: "Tomb Raider", price: 6.32, image: "https://store-images.s-microsoft.com/image/apps.41930.13751698123876051.fbe31682-3a2b-47ef-81cd-f2d61eb7eccd.a31a5e60-b857-4875-9874-e0db0f88a78d", category: ['adventure', 'action'], badge: '⚡ DEAL', badgeColor: 'from-yellow-500 to-amber-500', rating: 4.5, originalPrice: 19.99 },
-  { title: "Uncharted", price: 11.99, image: "https://www.ubuy.dz/productimg/?image=aHR0cHM6Ly9pbWFnZXMtbmEuc3NsLWltYWdlcy1hbWF6b24uY29tL2ltYWdlcy9JLzUxZEZadUxmU3lMLmpwZw.jpg", category: ['adventure', 'action'], badge: '🗺️ ADV', badgeColor: 'from-teal-500 to-cyan-500', rating: 4.7, originalPrice: 29.99 },
-  { title: "Cyberpunk 2077", price: 19.99, image: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Cyberpunk_2077_box_art.jpg/250px-Cyberpunk_2077_box_art.jpg", category: ['hot', 'rpg', 'action', 'shooter'], badge: '🔥 HOT', badgeColor: 'from-orange-500 to-red-500', rating: 4.6, originalPrice: 59.99 },
-  { title: "Elden Ring", price: 13.99, image: "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg", category: ['hot', 'rpg', 'action'], badge: '👑 BEST', badgeColor: 'from-purple-500 to-pink-500', rating: 4.9, originalPrice: 49.99 },
-  { title: "The Witcher 3", price: 14.99, image: "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg", category: ['rpg', 'adventure'], badge: '⭐ TOP', badgeColor: 'from-blue-500 to-cyan-500', rating: 4.9, originalPrice: 39.99 },
-  { title: "God of War", price: 16.99, image: "https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg", category: ['hot', 'action', 'adventure'], badge: '🔥 HOT', badgeColor: 'from-orange-500 to-red-500', rating: 4.8, originalPrice: 69.99 },
-  { title: "Baldur's Gate 3", price: 18.99, image: "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Baldur%27s_Gate_3_cover_art.jpg/250px-Baldur%27s_Gate_3_cover_art.jpg", category: ['rpg', 'adventure'], badge: '🏆 GOTY', badgeColor: 'from-amber-400 to-yellow-500', rating: 4.9, originalPrice: 59.99 },
-  { title: "Counter-Strike 2", price: 0, image: "https://tamhongame.net/storage/games/counter-strike-2-online-multiplayer/counter-strike-2-online-multiplayer-vertical_photo-0NQZisZoNB3jqYbdxkop.jpeg", category: ['free', 'shooter', 'hot'], badge: '🎯 FPS', badgeColor: 'from-green-500 to-emerald-500', rating: 4.7 },
-  { title: "Resident Evil 4", price: 0, image: "https://media.senscritique.com/media/000021509526/0/resident_evil_4.png", category: ['free', 'action', 'shooter'], badge: '🎯 FPS', badgeColor: 'from-green-500 to-emerald-500', rating: 4.6 },
-  { title: "Hogwarts Legacy", price: 12.50, image: "https://image.api.playstation.com/vulcan/ap/rnd/202503/2716/f6b1e4512ee6061913f7d604da8f5f39566be56ca32a68ee.png", category: ['rpg', 'adventure'], badge: '✨ NEW', badgeColor: 'from-violet-500 to-purple-500', rating: 4.7, originalPrice: 59.99 },
-  { title: "Call of Duty: MW3", price: 19.25, image: "https://upload.wikimedia.org/wikipedia/en/b/bf/Call_of_Duty_Modern_Warfare_3_box_art.png", category: ['shooter', 'hot', 'action'], badge: '🎯 FPS', badgeColor: 'from-red-500 to-rose-500', rating: 4.5, originalPrice: 69.99 },
-];
-
-const CATEGORIES = [
-  { key: 'all', label: 'All Games' }, { key: 'hot', label: '🔥 Hot' }, { key: 'shooter', label: '🎯 Shooter' }, { key: 'adventure', label: '🗺️ Adventure' }, { key: 'rpg', label: '⚔️ RPG' }, { key: 'action', label: '💥 Action' }, { key: 'sport', label: '⚽ Sport' }, { key: 'free', label: '🆓 Free' },
-];
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/el_fr1do/",
@@ -83,7 +64,6 @@ const HomePage = ({
 
   return (
     <div className="relative min-h-screen bg-[#030712] text-white font-sans overflow-x-hidden selection:bg-blue-600/30">
-      <Toaster position="top-center" theme="dark" />
       
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/[0.07] blur-[150px]" />
@@ -104,7 +84,7 @@ const HomePage = ({
 
           <div className="flex items-center gap-2 sm:gap-3">
             
-            {/* زر Contact - يظهر بـ hover */}
+            {/* زر Contact */}
 <div 
   className="relative"
   onMouseEnter={() => setShowContact(true)}
@@ -226,8 +206,11 @@ const HomePage = ({
             ))}
           </div>
 
+          {/* قسم الألعاب في HomePage */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredGames.map((game, idx) => (
+            
+            {/* عرض أول 11 لعبة فقط */}
+            {filteredGames.slice(0, 11).map((game, idx) => (
               <motion.div key={game.title} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: idx * 0.03 }}
                 className="group relative bg-[#0a0f1e] rounded-xl border border-white/[0.04] overflow-hidden hover:border-blue-500/30 transition-all flex flex-col hover:shadow-lg hover:shadow-blue-500/10">
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#0d1225]">
@@ -246,6 +229,30 @@ const HomePage = ({
                 </div>
               </motion.div>
             ))}
+
+            {/* الكارطة الأخيرة لي تدي لصفحة كل الألعاب */}
+            {filteredGames.length > 11 && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.4 }}>
+                <Link to="/games" className="group relative bg-gradient-to-br from-[#0f172a] to-[#0a0f1e] rounded-xl border border-blue-500/20 hover:border-blue-400/50 transition-all flex flex-col items-center justify-center h-full min-h-[300px] hover:shadow-xl hover:shadow-blue-500/20 overflow-hidden cursor-pointer">
+                  <div className="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition-colors" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-400/30 transition-all" />
+                  
+                  <div className="relative z-10 flex flex-col items-center gap-4 text-center px-4">
+                    <div className="w-14 h-14 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-600/30 transition-all duration-300">
+                      <Plus className="w-6 h-6 text-blue-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-white mb-1">Explore More</h3>
+                      <p className="text-xs text-gray-400 font-medium">+20 Other Games</p>
+                    </div>
+                    <span className="mt-2 text-xs font-semibold text-blue-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                      View All <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+
           </div>
         </section>
 
@@ -344,11 +351,7 @@ const HomePage = ({
 
             <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
               <p>© {new Date().getFullYear()} TOKIO Store. All rights reserved.</p>
-              <div className="flex gap-4">
-                <a href={SOCIAL_LINKS.instagram} className="hover:text-white">Instagram</a>
-                <a href={SOCIAL_LINKS.telegram} className="hover:text-white">Telegram</a>
-                <a href={SOCIAL_LINKS.discord} className="hover:text-white">Discord</a>
-              </div>
+             
               <p>Made with <Heart className="w-3 h-3 inline text-red-500 fill-red-500" /> by TOKIO</p>
             </div>
           </div>
@@ -362,9 +365,9 @@ const HomePage = ({
 
 export default function App() {
   const [cartCount, setCartCount] = useState(0)
+  const [showPaymentMethod, setShowPaymentMethod] = useState('telegram'); 
   const [user, setUser] = useState(null)
-  const [avatar, setAvatar] = useState(null);
-  
+  const [avatar, setAvatar] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [headerScrolled, setHeaderScrolled] = useState(false);
@@ -414,23 +417,13 @@ export default function App() {
     }
   };
 
-  const addToCart = (game) => {
-    const username = localStorage.getItem("username")
-    if (!username) { toast.error("❌ يجب عليك تسجيل الدخول"); return; }
-    
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || []
-    if (storedCart.find(item => item.title === game.title)) { toast.error("⚠️ اللعبة موجودة في السلة"); return; }
-
-    const newCart = [...storedCart, { ...game, quantity: 1 }]
-    localStorage.setItem("cart", JSON.stringify(newCart))
-    window.dispatchEvent(new Event("cartUpdated"))
-    toast.success(`✅ تم إضافة ${game.title}`);
-  }
-
-  const updateQuantity = (title, d) => {
-    const updated = cartItems.map(i => i.title === title ? { ...i, quantity: Math.max(1, i.quantity + d) } : i);
+  // دوال السلة الكاملة المفقودة (Update Quantity & Remove Item)
+  const updateQuantity = (title, delta) => {
+    const updated = cartItems.map(i => 
+      i.title === title ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i
+    );
     localStorage.setItem("cart", JSON.stringify(updated));
-    refreshCart();
+    refreshCart(); // لتحديث العداد والواجهة
   };
 
   const removeItem = (title) => {
@@ -440,64 +433,177 @@ export default function App() {
     toast.success("🗑️ تم الحذف من السلة");
   };
 
-  const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = useMemo(() => {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cartItems]);
+
+  const addToCart = (game) => {
+    const username = localStorage.getItem("username");
+    
+    if (!username) { 
+      toast.error("❌ يجب عليك تسجيل الدخول أولاً"); 
+      return; 
+    }
+    
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (storedCart.find(item => item.title === game.title)) { 
+      toast.warning("⚠️ اللعبة موجودة بالفعل في السلة"); 
+      return; 
+    }
+
+    const newCart = [...storedCart, { ...game, quantity: 1 }];
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    refreshCart();
+    toast.success(`✅ تم إضافة ${game.title}`);
+  };
 
   const scrollToShop = () => shopRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <BrowserRouter>
+     {/* ✅ Toaster Global لتعمل في كل الصفحات */}
+     <Toaster position="top-center" theme="dark" richColors />
+
+            {/* السلة الجانبية (Cart Drawer) */}
       <AnimatePresence>
         {showCartDrawer && (
-          <div className="fixed inset-0 z-[100]">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setShowCartDrawer(false)} className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 35, stiffness: 300 }}
-              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-[#0a0f1e]/95 backdrop-blur-2xl border-l border-white/5 shadow-2xl flex flex-col">              
-              <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center"><ShoppingCart className="w-4 h-4 text-blue-400" /></div>
-                  <h3 className="font-bold text-white">Your Cart</h3>
+           <div className="fixed inset-0 z-[100]">
+            {/* الخلفية الغامقة */}
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setShowCartDrawer(false)} 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            />
+
+            <motion.div 
+              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} 
+              transition={{ type: 'spring', damping: 35, stiffness: 300 }}
+              className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-[#0a0f1e]/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl flex flex-col h-full overflow-hidden"
+            >              
+              {/* الهيدر ديال السلة */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0f172a]/80">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center text-blue-400">
+                    <ShoppingCart className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-bold text-xl text-white">Your Cart</h3>
                 </div>
-                <button onClick={() => setShowCartDrawer(false)} className="p-2 text-gray-400 hover:text-white"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowCartDrawer(false)} className="p-2 text-gray-400 hover:text-red-400 hover:bg-white/5 rounded-full transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-5 py-3">
+              {/* المحتوى: الألعاب */}
+              <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3 custom-scrollbar">
                 {cartItems.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center">
-                    <ShoppingCart className="w-12 h-12 text-gray-700 mb-4" />
-                    <p className="text-gray-400">Cart is empty</p>
+                  <div className="flex flex-col items-center justify-center h-full text-center space-y-4 pt-10">
+                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-gray-600">
+                      <ShoppingCart className="w-10 h-10" />
+                    </div>
+                    <p className="text-gray-400 font-medium">Your cart is empty.</p>
+                    <button onClick={() => setShowCartDrawer(false)} className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all">
+                      Go Shopping
+                    </button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <>
+                     <p className="text-xs text-gray-500 mb-2 pl-1"><strong>{cartItems.length}</strong> Item(s)</p>
+
                     {cartItems.map((item) => (
-                      <div key={item.title} className="flex gap-3 bg-white/[0.02] rounded-xl p-3 border border-white/5">
-                        <img src={item.image} alt={item.title} className="w-14 h-18 object-cover rounded-lg" />
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-xs font-bold text-white truncate">{item.title}</h4>
-                          <p className="text-sm text-blue-400 font-bold">${(item.price * item.quantity).toFixed(2)}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <button onClick={() => updateQuantity(item.title, -1)} className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-red-500/30 hover:border-red-500/50 transition-all">
-                              <Minus className="w-3.5 h-3.5 text-white" />
-                            </button>
-                            <span className="text-sm font-bold w-6 text-center text-white">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item.title, 1)} className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center hover:bg-green-500/30 hover:border-green-500/50 transition-all">
-                              <Plus className="w-3.5 h-3.5 text-white" />
-                            </button>
+                      <div key={item.title} className="flex gap-4 bg-white/[0.02] p-3 rounded-xl border border-white/5 group hover:border-blue-500/30 transition-all">
+                        <img src={item.image} alt={item.title} className="w-16 h-20 object-cover rounded-lg shadow-sm" />
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div>
+                            <h4 className="text-sm font-bold text-white truncate pr-2">{item.title}</h4>
+                            <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold text-green-400 bg-green-400/10 rounded border border-green-400/20">
+                              ${item.price.toFixed(2)} each
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-3">
+                             <div className="flex items-center bg-black/50 rounded-xl p-1 border border-white/5 overflow-hidden">
+                                <button 
+                                  onClick={() => updateQuantity(item.title, -1)} 
+                                  className="w-8 h-8 flex items-center justify-center bg-white/[0.07] hover:bg-red-500/20 text-gray-300 hover:text-red-400 rounded-lg transition-all active:scale-90"
+                                >
+                                  <Minus className="w-4 h-4" />
+                                </button>
+                                <span className="w-10 text-center text-sm font-black text-white">{item.quantity}</span>
+                                <button 
+                                  onClick={() => updateQuantity(item.title, 1)} 
+                                  className="w-8 h-8 flex items-center justify-center bg-white/[0.07] hover:bg-green-500/20 text-gray-300 hover:text-green-400 rounded-lg transition-all active:scale-90"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                              <button 
+                                onClick={() => removeItem(item.title)} 
+                                className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
                           </div>
                         </div>
-                        <button onClick={() => removeItem(item.title)} className="p-1 text-gray-500 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
                       </div>
                     ))}
-                  </div>
+                  </>
                 )}
               </div>
 
+              {/* الجزء الأسفل: الدفع والدفع الحقيقي */}
               {cartItems.length > 0 && (
-                <div className="border-t border-white/5 px-5 py-4 space-y-3">
-                  <div className="flex justify-between items-center"><span className="text-gray-300 font-semibold text-sm">Total</span><span className="text-xl font-black text-white">${totalAmount.toFixed(2)}</span></div>
-                  <a href={SOCIAL_LINKS.telegram} target="_blank" rel="noopener noreferrer" className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98]">
-                    <CreditCard className="w-4 h-4" /> Checkout with Telegram
-                  </a>
+                <div className="border-t border-white/10 bg-[#0f172a] p-6 space-y-4 relative z-10">
+                  
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-gray-400 font-medium">Total Amount</span>
+                    <div className="text-right">
+                       <span className="text-2xl font-black text-white">${totalAmount.toFixed(2)}</span>
+                       <span className="block text-[10px] text-gray-500">USD / ~{Math.round(totalAmount * 130)} DZD</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase text-gray-500 font-bold tracking-wider ml-1">Payment Method</label>
+                    
+                    <a 
+  href={`https://t.me/DHIAA_FRD?text=${encodeURIComponent(
+    `Hello, I want to buy:\n${cartItems.map(i => `${i.title} (x${i.quantity})`).join('\n')}\n\nTotal: $${totalAmount.toFixed(2)}\n\nPlease send your Bank/CIB number.`
+  )}`} 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="w-full flex items-center gap-4 p-4 bg-[#0088cc] hover:bg-[#0077b5] rounded-xl group transition-all shadow-lg shadow-cyan-900/20 cursor-pointer text-white"
+>
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold">Continue with Telegram</div>
+                        <div className="text-[11px] text-blue-100 opacity-90">Pay via CIB, BaridiMob or Transfer</div>
+                      </div>
+                      <ArrowRight className="w-5 h-5 opacity-70 group-hover:translate-x-1 transition-transform"/>
+                    </a>
+
+                    <button 
+                      onClick={() => toast.info("Coming Soon! We are adding Stripe integration soon.")}
+                      disabled
+                      className="w-full flex items-center gap-4 p-4 bg-[#1e293b] border border-white/5 rounded-xl cursor-not-allowed opacity-50 grayscale transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-500">
+                        <CreditCard className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                         <div className="font-bold text-gray-300">Credit Card (Visa/Mastercard)</div>
+                         <div className="text-[11px] text-gray-500">Secure payment via Stripe</div>
+                      </div>
+                      <Lock className="w-4 h-4 text-gray-600"/>
+                    </button>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-center gap-2 text-[10px] text-gray-500">
+                    <ShieldCheck className="w-3 h-3 text-green-500" />
+                    <span>Instant Delivery after confirmed payment</span>
+                  </div>
                 </div>
               )}
             </motion.div>
@@ -517,11 +623,16 @@ export default function App() {
         } />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/games" element={<AllGamesPage addToCart={addToCart} />} /> 
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/games" element={<AllGamesPage addToCart={addToCart} />} /> 
+
+<Route path="/game/:slug" element={<GameDetailsPage addToCart={addToCart} />} />
       </Routes>
       <Signature />
+      
     </BrowserRouter>
   );
 }
