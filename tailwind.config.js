@@ -6,25 +6,30 @@ export default {
   theme: {
     extend: {
       colors: {
+
+
+
+
+
         primary: {
-          DEFAULT: '#ff3b3b',
-          600: '#ff2f2f',
-          500: '#ff6b6b'
-        },
+                  DEFAULT: '#00f3ff',
+                  600: '#00d4e0',
+                  500: '#00f3ff'
+                },
         accent: {
           DEFAULT: '#b76cff',
           500: '#b76cff'
         },
         neon: {
-          DEFAULT: '#00e6ff'
-        },
+                  DEFAULT: '#00f3ff'
+                },
         surface: {
           DEFAULT: '#0b0f17',
           100: '#0f1620',
           200: '#0b0f17'
         },
-        brand: {
-          DEFAULT: '#06070a',
+                brand: {
+          DEFAULT: '#050505',
           surface: '#0b0f17'
         },
         muted: {
