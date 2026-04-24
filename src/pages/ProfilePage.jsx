@@ -80,8 +80,8 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#020617] flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20 z-0"></div>
+      <div className="min-h-screen bg-surface flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-0"></div>
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -91,12 +91,12 @@ export default function ProfilePage() {
           <motion.div 
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-            className="inline-block p-4 rounded-full bg-white/5 border border-white/10 shadow-2xl mb-4"
+            className="inline-block p-4 rounded-full bg-white/5 border border-gray-200/10 shadow-2xl mb-4"
           >
-            <Gamepad2 className="w-12 h-12 text-blue-500" />
+            <Gamepad2 className="w-12 h-12 text-accent" />
           </motion.div>
           <h2 className="text-2xl font-bold text-white tracking-wider">LOADING DASHBOARD...</h2>
-          <p className="text-blue-400 mt-2 text-sm font-mono">Connecting to servers...</p>
+          <p className="text-accent mt-2 text-sm font-mono">Connecting to servers...</p>
         </motion.div>
       </div>
     );
@@ -146,19 +146,19 @@ export default function ProfilePage() {
     }
   };
   return (
-    <div className="min-h-screen bg-[#020617] text-white font-sans relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-brand text-white font-sans relative overflow-hidden pb-20">
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 blur-[120px] rounded-full"></div>
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 blur-[120px] rounded-full"></div>
       </div>
 
       {/* Header */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8 mb-12">
         <motion.h1 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl font-black tracking-tight">My <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Account</span></motion.h1>
+          className="text-4xl font-black tracking-tight">My <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Account</span></motion.h1>
         <motion.p initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}
-          className="text-gray-400 mt-2">Welcome back, Commander.</motion.p>
+          className="text-muted mt-2">Welcome back, Commander.</motion.p>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -168,21 +168,21 @@ export default function ProfilePage() {
           className="lg:col-span-4 space-y-6">
           
           {/* Identity Card */}
-          <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/5 p-6 rounded-2xl shadow-xl">
+          <div className="bg-surface/80 backdrop-blur-xl border border-gray-200/10 p-6 rounded-2xl shadow-xl">
             <div className="flex flex-col items-center text-center">
               <div className="relative group cursor-pointer">
-                <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-blue-500 via-purple-500 to-indigo-500 shadow-lg shadow-blue-500/20">
-                  <img src={avatar || "https://via.placeholder.com/150"} className="w-full h-full object-cover rounded-full bg-[#020617]" alt="User Avatar"/>
+                <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary via-accent to-primary shadow-lg shadow-[rgba(183,108,255,0.12)]">
+                  <img src={avatar || "https://via.placeholder.com/150"} className="w-full h-full object-cover rounded-full bg-brand" alt="User Avatar"/>
                 </div>
-                <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-500 transition-all cursor-pointer shadow-lg border-2 border-[#0f172a]">
+                <label className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full hover:bg-primary/90 transition-all cursor-pointer shadow-lg border-2 border-gray-200/10">
                   <Camera className="w-4 h-4" />
                   <input type="file" className="hidden" accept="image/*" onChange={handleAvatarChange} />
                 </label>
               </div>
 
-              <h2 className="mt-4 text-2xl font-bold">{userData.username || user.displayName || user.email.split('@')[0]}</h2>
-              <div className="flex items-center gap-1 text-gray-400 text-sm mt-1">
-                <Mail className="w-3 h-3" /> {user.email}
+              <h2 className="mt-4 text-2xl font-bold text-white">{userData.username || user.displayName || user.email.split('@')[0]}</h2>
+              <div className="flex items-center gap-1 text-muted text-sm mt-1">
+                <Mail className="w-3 h-3 text-neon" /> {user.email}
               </div>
               
               <div className="flex gap-2 mt-4">
@@ -195,27 +195,27 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 mt-8 pt-6 border-t border-white/5">
+            <div className="grid grid-cols-3 gap-2 mt-8 pt-6 border-t border-gray-200/10">
               <div className="text-center">
                 <span className="block text-xl font-black text-white">{mockPurchases.length}</span>
-                <span className="text-xs text-gray-500 uppercase">Bought</span>
+                <span className="text-xs text-muted uppercase">Bought</span>
               </div>
               <div className="text-center border-x border-white/5">
-                <span className="block text-xl font-black text-blue-400">$44.97</span>
-                <span className="text-xs text-gray-500 uppercase">Spent</span>
+                <span className="block text-xl font-black text-primary">$44.97</span>
+                <span className="text-xs text-muted uppercase">Spent</span>
               </div>
               <div className="text-center">
-                <span className="block text-xl font-black text-purple-400">A+</span>
-                <span className="text-xs text-gray-500 uppercase">Rank</span>
+                <span className="block text-xl font-black text-accent">A+</span>
+                <span className="text-xs text-muted uppercase">Rank</span>
               </div>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-[#0f172a]/50 border border-white/5 p-4 rounded-2xl">
-            <h3 className="font-bold text-sm text-gray-400 mb-3 uppercase tracking-wider">Quick Actions</h3>
+          <div className="bg-surface/50 border border-gray-200/10 p-4 rounded-2xl">
+            <h3 className="font-bold text-sm text-muted mb-3 uppercase tracking-wider">Quick Actions</h3>
             <div className="space-y-2">
-              <a href="#" className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl transition-colors text-sm group">
+                <a href="#" className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl transition-colors text-sm group">
                 <div className="p-2 bg-yellow-500/10 text-yellow-500 rounded-lg"><Star className="w-4 h-4"/></div>
                 <span className="group-hover:text-white">Saved Games</span>
               </a>
@@ -235,19 +235,19 @@ export default function ProfilePage() {
             {showHistory ? (
               /* HISTORY TAB */
               <motion.div key="history" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-6 min-h-[400px]">
+                <div className="bg-surface/80 backdrop-blur-xl border border-gray-200/10 rounded-2xl p-6 min-h-[400px]">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold flex items-center gap-2"><ShoppingBag className="text-blue-400" /> Purchase History</h2>
-                    <button onClick={() => setShowHistory(false)} className="text-sm text-blue-400 hover:underline">Back to Profile</button>
+                    <h2 className="text-xl font-bold flex items-center gap-2"><ShoppingBag className="text-accent" /> Purchase History</h2>
+                    <button onClick={() => setShowHistory(false)} className="text-sm text-accent hover:underline">Back to Profile</button>
                   </div>
                   
                   {mockPurchases.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 bg-white/[0.02] rounded-xl border border-white/5 hover:border-blue-500/30 transition-all mb-3">
+                    <div key={item.id} className="flex items-center justify-between p-4 bg-neutral-100/3 rounded-xl border border-gray-200/10 hover:border-accent/30 transition-all mb-3">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-[#1e293b] rounded-lg flex items-center justify-center text-2xl">{item.icon}</div>
+                        <div className="w-12 h-12 bg-neutral-100/10 rounded-lg flex items-center justify-center text-2xl">{item.icon}</div>
                         <div>
-                          <h4 className="font-bold">{item.title}</h4>
-                          <span className="text-xs text-gray-500">{item.date}</span>
+                          <h4 className="font-bold text-white">{item.title}</h4>
+                          <span className="text-xs text-muted">{item.date}</span>
                         </div>
                       </div>
                       <div className="text-right">
@@ -263,7 +263,7 @@ export default function ProfilePage() {
               <motion.div key="settings" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 
                 {/* Settings Card */}
-                <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-white/5 p-6 rounded-2xl">
+                <div className="bg-surface/80 backdrop-blur-xl border border-gray-200/10 p-6 rounded-2xl">
                   <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><Edit2 className="text-purple-400" /> Edit Information</h2>
                   
                   <div className="space-y-4">
@@ -272,7 +272,7 @@ export default function ProfilePage() {
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                         <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} placeholder="Enter username..."
-                          className="w-full pl-10 pr-4 py-3 bg-[#020617] border border-white/10 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all" />
+                          className="w-full pl-10 pr-4 py-3 bg-neutral-100/5 border border-gray-200/10 rounded-xl focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all" />
                       </div>
                     </div>
                     
@@ -281,26 +281,26 @@ export default function ProfilePage() {
                     </button>
                   </div>
 
-                  <hr className="border-white/5 my-8" />
+                  <hr className="border-gray-200/10 my-8" />
 
                   <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><Lock className="text-red-400" /> Security</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="col-span-2">
                       <label className="block text-xs text-gray-400 mb-1 ml-1">New Password</label>
                       <input type="password" placeholder="••••••••" onChange={(e) => setNewPassword(e.target.value)} 
-                        className="w-full px-4 py-3 bg-[#020617] border border-white/10 rounded-xl focus:border-purple-500 outline-none" />
+                        className="w-full px-4 py-3 bg-neutral-100/5 border border-gray-200/10 rounded-xl focus:border-accent outline-none" />
                     </div>
                     <button onClick={handlePasswordChange} className="py-3 bg-red-600/10 border border-red-500/30 text-red-400 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all">
                       Update Password
                     </button>
-                    <button onClick={() => alert("This would link Steam account")} className="py-3 bg-[#171e2e] border border-white/5 text-gray-300 rounded-xl font-bold hover:bg-[#1e293b] transition-all">
+                    <button onClick={() => alert("This would link Steam account")} className="py-3 bg-neutral-100/10 border border-gray-200/10 text-muted rounded-xl font-bold hover:bg-neutral-100/20 transition-all">
                       Link Steam ID
                     </button>
                   </div>
                 </div>
 
                 {/* Recent Activity */}
-                <div className="mt-6 bg-[#0f172a]/80 border border-white/5 rounded-2xl p-6">
+                <div className="mt-6 bg-surface/80 border border-gray-200/10 rounded-2xl p-6">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="font-bold">Recent Activity</h3>
                     <button onClick={() => setShowHistory(true)} className="text-sm text-blue-400 hover:underline">View All</button>

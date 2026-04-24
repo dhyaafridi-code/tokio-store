@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+/* Import Inter from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+/* Theme CSS variables (used for non-tailwind fallbacks and utilities) */
+:root {
+  /* Dark gaming / neon palette */
+  --bg: #06070a; /* deep page background */
+  --surface: #0b0f17; /* cards / surfaces */
+  --muted: #9aa6b2; /* muted text */
+  --primary: #ff3b3b; /* neon red accent */
+  --accent: #b76cff; /* neon purple accent */
+  --neon: #00e6ff; /* neon cyan highlight */
+  --brand: #06070a;
+  --text: #e6f0ff; /* light text */
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -35,15 +51,46 @@ html {
 
 /* Body background */
 body {
-  background: #020618;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(183,108,255,0.06), transparent 8%),
+              radial-gradient(900px 400px at 90% 30%, rgba(0,230,255,0.04), transparent 12%),
+              linear-gradient(180deg, rgba(255,255,255,0.02), transparent 30%),
+              var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* Selection styling */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
-  color: white;
+  background: rgba(0, 230, 255, 0.18); /* neon cyan selection */
+  color: var(--bg);
+}
+
+/* Decorative animated scanlines */
+.bg-scanlines::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(transparent 92%, rgba(255,255,255,0.02) 92%);
+  background-size: 100% 14px;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  opacity: 0.25;
+}
+
+/* Soft neon glow utility for key elements */
+.neon-glow {
+  box-shadow: 0 6px 30px rgba(0,230,255,0.06), 0 0 18px rgba(183,108,255,0.04) inset;
+}
+
+/* Floating decorative blobs used in hero */
+.neon-blob {
+  position: absolute;
+  filter: blur(40px) saturate(120%);
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 /* Animations */
@@ -60,6 +107,58 @@ body {
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+/* Animated neon background layers (apply to a root element with .neon-background) */
+.neon-background::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+  filter: blur(80px) saturate(120%);
+  background-image:
+    radial-gradient(600px 420px at 10% 10%, rgba(183,108,255,0.14), transparent 28%),
+    radial-gradient(520px 360px at 90% 30%, rgba(0,230,255,0.10), transparent 30%),
+    radial-gradient(400px 300px at 50% 80%, rgba(255,59,59,0.06), transparent 22%);
+  animation: float 14s ease-in-out infinite;
+  opacity: 0.95;
+}
+
+.neon-background::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  filter: blur(140px);
+  background: linear-gradient(90deg, rgba(0,230,255,0.02), rgba(183,108,255,0.02), rgba(255,59,59,0.02));
+  animation: rotate 30s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Optional blob size helpers (used for manual placement in markup) */
+.neon-blob.blob-1 { width: 420px; height: 420px; filter: blur(60px); opacity: 0.9; }
+.neon-blob.blob-2 { width: 360px; height: 360px; filter: blur(80px); opacity: 0.7; }
+.neon-blob.blob-3 { width: 300px; height: 300px; filter: blur(90px); opacity: 0.65; }
+
+/* Subtle vignette to add depth */
+.neon-vignette::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(1000px 600px at 50% 50%, transparent 40%, rgba(0,0,0,0.55));
+  mix-blend-mode: multiply;
+  z-index: 1;
+  opacity: 0.7;
 }
 
 /* Better image rendering */

@@ -40,49 +40,49 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-surface flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-20%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/[0.08] blur-[150px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md bg-[#0a0f1e]/90 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-xl p-8"
+        className="relative w-full max-w-md bg-surface/90 backdrop-blur-2xl rounded-2xl border border-gray-200/10 shadow-xl p-8"
       >
         <div className="text-center mb-7">
           <div className="w-14 h-14 mx-auto bg-gradient-to-tr from-purple-600 to-pink-500 rounded-xl flex items-center justify-center mb-4">
             <Sparkles className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-2xl font-black text-white">Create Account 🎮</h2>
-          <p className="text-sm text-gray-400 mt-1">Join TOKIO Store</p>
+          <p className="text-sm text-muted mt-1">Join TOKIO Store</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neon" />
             <input type="text" required value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"
-              className="w-full bg-white/[0.04] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-purple-500/50" />
+              className="w-full bg-neutral-100/5 border border-gray-200/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder:text-muted focus:outline-none focus:border-accent/50" />
           </div>
 
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neon" />
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"
-              className="w-full bg-white/[0.04] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-purple-500/50" />
+              className="w-full bg-neutral-100/5 border border-gray-200/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder:text-muted focus:outline-none focus:border-accent/50" />
           </div>
 
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neon" />
             <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"
-              className="w-full bg-white/[0.04] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-purple-500/50" />
+              className="w-full bg-neutral-100/5 border border-gray-200/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder:text-muted focus:outline-none focus:border-accent/50" />
           </div>
 
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neon" />
             <input type="password" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"
-              className="w-full bg-white/[0.04] border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-purple-500/50" />
+              className="w-full bg-neutral-100/5 border border-gray-200/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white placeholder:text-muted focus:outline-none focus:border-accent/50" />
           </div>
 
-          <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-[0.98]">
+          <button className="w-full bg-gradient-to-r from-accent to-primary text-white font-bold py-3.5 rounded-xl shadow-lg active:scale-[0.98]">
             Register Now
           </button>
 
